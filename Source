@@ -11,10 +11,10 @@
 
 ]]
 
-local Release = "Prerelease Beta 6.1"
+local Release = ""
 
-local Luna = { 
-	Folder = "Luna", 
+local Nebula = { 
+	Folder = "Nebula", 
 	Options = {}, 
 	ThemeGradient = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(117, 164, 206)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(123, 201, 201)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(224, 138, 175))} 
 }
@@ -30,7 +30,7 @@ local Camera = workspace.CurrentCamera
 local CoreGui = game:GetService("CoreGui")
 
 local isStudio
-local website = "github.com/Nebula-Softworks"
+local website = "github.com/3246324"
 
 if RunService:IsStudio() then
 	isStudio = true
