@@ -9,8 +9,6 @@
 ██║ ╚████║███████╗██████╔╝╚██████╔╝███████╗██║  ██║    ██║██║ ╚████║   ██║   ███████╗██║  ██║██║     ██║  ██║╚██████╗███████╗
 ╚═╝  ╚═══╝╚══════╝╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝    ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝╚══════╝
 
-]]
-
 local Release = ""
 
 local Nebula = { 
@@ -1625,7 +1623,7 @@ local function BlurModule(Frame)
 	local MTREL = "Glass"
 	local binds = {}
 	local root = Instance.new('Folder', camera)
-	root.Name = 'LunaBlur'
+	root.Name = 'NebulaBlur'
 
 	local gTokenMH = 99999999
 	local gToken = math.random(1, gTokenMH)
@@ -1828,7 +1826,8 @@ local function unpackt(array : table)
 end
 
 -- Interface Management
-local LunaUI = isStudio and script.Parent:WaitForChild("Luna UI") or game:GetObjects("rbxassetid://86467455075715")[1]
+local NebulaUI = isStudio and (script.Parent:FindFirstChild("Nebula UI") or script.Parent:FindFirstChild("Luna UI") or script.Parent:WaitForChild("Nebula UI")) or game:GetObjects("rbxassetid://86467455075715")[1]
+if NebulaUI and NebulaUI.Name == "Luna UI" then NebulaUI.Name = "Nebula UI" end
 
 local SizeBleh = nil
 
@@ -1837,7 +1836,7 @@ local function Hide(Window, bind, notif)
 	bind = string.split(tostring(bind), "Enum.KeyCode.")
 	bind = bind[2]
 	if notif then
-		Luna:Notification({Title = "Interface Hidden", Content = "The interface has been hidden, you may reopen the interface by Pressing the UI Bind In Settings ("..tostring(bind)..")", Icon = "visibility_off"})
+		Nebula:Notification({Title = "Interface Hidden", Content = "The interface has been hidden, you may reopen the interface by Pressing the UI Bind In Settings ("..tostring(bind)..")", Icon = "visibility_off"})
 	end
 	tween(Window, {BackgroundTransparency = 1})
 	tween(Window.Elements, {BackgroundTransparency = 1})
@@ -1874,49 +1873,49 @@ end
 
 
 if gethui then
-	LunaUI.Parent = gethui()
+	NebulaUI.Parent = gethui()
 elseif syn and syn.protect_gui then 
-	syn.protect_gui(LunaUI)
-	LunaUI.Parent = CoreGui
+	syn.protect_gui(NebulaUI)
+	NebulaUI.Parent = CoreGui
 elseif not isStudio and CoreGui:FindFirstChild("RobloxGui") then
-	LunaUI.Parent = CoreGui:FindFirstChild("RobloxGui")
+	NebulaUI.Parent = CoreGui:FindFirstChild("RobloxGui")
 elseif not isStudio then
-	LunaUI.Parent = CoreGui
+	NebulaUI.Parent = CoreGui
 end
 
 if gethui then
 	for _, Interface in ipairs(gethui():GetChildren()) do
-		if Interface.Name == LunaUI.Name and Interface ~= LunaUI then
+		if Interface.Name == NebulaUI.Name and Interface ~= NebulaUI then
 			Hide(Interface.SmartWindow)
 			Interface.Enabled = false
-			Interface.Name = "Luna-Old"
+			Interface.Name = "Nebula-Old"
 		end
 	end
 elseif not isStudio then
 	for _, Interface in ipairs(CoreGui:GetChildren()) do
-		if Interface.Name == LunaUI.Name and Interface ~= LunaUI then
+		if Interface.Name == NebulaUI.Name and Interface ~= NebulaUI then
 			Hide(Interface.SmartWindow)
 			Interface.Enabled = false
-			Interface.Name = "Luna-Old"
+			Interface.Name = "Nebula-Old"
 		end
 	end
 end
 
-LunaUI.Enabled = false
-LunaUI.SmartWindow.Visible = false
-LunaUI.Notifications.Template.Visible = false
-LunaUI.DisplayOrder = 1000000000
+NebulaUI.Enabled = false
+NebulaUI.SmartWindow.Visible = false
+NebulaUI.Notifications.Template.Visible = false
+NebulaUI.DisplayOrder = 1000000000
 
-local Main : Frame = LunaUI.SmartWindow
+local Main : Frame = NebulaUI.SmartWindow
 local Dragger = Main.Drag
-local dragBar = LunaUI.Drag
+local dragBar = NebulaUI.Drag
 local dragInteract = dragBar and dragBar.Interact or nil
 local dragBarCosmetic = dragBar and dragBar.Drag or nil
 local Elements = Main.Elements.Interactions
 local LoadingFrame = Main.LoadingFrame
 local Navigation = Main.Navigation
 local Tabs = Navigation.Tabs
-local Notifications = LunaUI.Notifications
+local Notifications = NebulaUI.Notifications
 local KeySystem : Frame = Main.KeySystem
 
 -- local function LoadConfiguration(Configuration, autoload)
@@ -1925,7 +1924,7 @@ local KeySystem : Frame = Main.KeySystem
 -- 	local notified = false
 
 -- 	-- Iterate through current UI elements' flags
--- 	for FlagName, Flag in pairs(Luna.Flags) do
+-- 	for FlagName, Flag in pairs(Nebula.Flags) do
 -- 		local FlagValue = Data[FlagName]
 
 -- 		if FlagValue then
@@ -1942,20 +1941,20 @@ local KeySystem : Frame = Main.KeySystem
 -- 			end)
 -- 		else
 -- 			notified = true
--- 			Luna:Notification({Title = "Config Error", Content = "Luna was unable to load or find '"..FlagName.. "'' in the current script. Check ".. website .." for help.", Icon = "flag"})
+-- 			Nebula:Notification({Title = "Config Error", Content = "Nebula was unable to load or find '"..FlagName.. "'' in the current script. Check ".. website .." for help.", Icon = "flag"})
 -- 		end
 -- 	end
 -- 	if autoload and notified == false then
--- 		Luna:Notification({
+-- 		Nebula:Notification({
 -- 			Title = "Config Autoloaded",
--- 			Content = "The Configuration Has Been Automatically Loaded. Thank You For Using Luna Library",
+-- 			Content = "The Configuration Has Been Automatically Loaded. Thank You For Using Nebula Library",
 -- 			Icon = "file-code-2",
 -- 			ImageSource = "Lucide"
 -- 		})
 -- 	elseif notified == false then
--- 		Luna:Notification({
+-- 		Nebula:Notification({
 -- 			Title = "Config Loaded",
--- 			Content = "The Configuration Has Been Loaded. Thank You For Using Luna Library",
+-- 			Content = "The Configuration Has Been Loaded. Thank You For Using Nebula Library",
 -- 			Icon = "file-code-2",
 -- 			ImageSource = "Lucide"
 -- 		})
@@ -1966,7 +1965,7 @@ local KeySystem : Frame = Main.KeySystem
 
 -- local function SaveConfiguration(Configuration, ConfigFolder, hasRoot)
 -- 	local Data = {}
--- 	for i,v in pairs(Luna.Flags) do
+-- 	for i,v in pairs(Nebula.Flags) do
 -- 		if v.Type == "ColorPicker" then
 -- 			Data[i] = PackColor(v.Color)
 -- 		else
@@ -2071,7 +2070,7 @@ local function Draggable(Bar, Window, enableTaptic, tapticOffset)
 	end)
 end
 
-function Luna:Notification(data) -- action e.g open messages
+function Nebula:Notification(data) -- action e.g open messages
 	task.spawn(function()
 		data = Kwargify({
 			Title = "Missing Title",
@@ -2211,14 +2210,14 @@ local function Minimize(Window)
 end
 
 
-function Luna:CreateWindow(WindowSettings)
+function Nebula:CreateWindow(WindowSettings)
 
 	WindowSettings = Kwargify({
-		Name = "Luna UI Example Window",
+		Name = "Nebula UI Example Window",
 		Subtitle = "",
 		LogoID = "6031097225",
 		LoadingEnabled = true,
-		LoadingTitle = "Luna Interface Suite",
+		LoadingTitle = "Nebula Interface Suite",
 		LoadingSubtitle = "by Nebula Softworks",
 
 		ConfigSettings = {},
@@ -2226,7 +2225,7 @@ function Luna:CreateWindow(WindowSettings)
 		KeySystem = false,
 		KeySettings = {},
 		WindowBackground = {
-			Image = "rbxassetid://81317310", -- your decal 81317310
+			Image = "rbxassetid://12157898692", -- 12157898692 correct rbxasset
 			ImageTransparency = 0,
 			ImageColor3 = Color3.fromRGB(255,255,255),
 			Color = nil, -- Color3.fromRGB(20,20,30)
@@ -2305,7 +2304,7 @@ function Luna:CreateWindow(WindowSettings)
 						if pg:IsA("ScrollingFrame") or pg:IsA("Frame") then pg.BackgroundTransparency = 0.4 end
 					end
 				end)
-				-- auto-resolve decal 81317310 to real image id if rbxassetid://81317310 shows blank
+				-- 12157898692 is already image id, no auto-resolve needed (kept for 81317310 compat)
 				if bg.Image:find("81317310") then
 					task.spawn(function()
 						local ok, res = pcall(game.GetObjects, game, "rbxassetid://81317310")
@@ -2328,7 +2327,7 @@ function Luna:CreateWindow(WindowSettings)
 
 	LoadingFrame.Frame.Frame.Title.Text = WindowSettings.LoadingTitle
 	LoadingFrame.Frame.Frame.Subtitle.Text = WindowSettings.LoadingSubtitle
-	LoadingFrame.Version.Text = LoadingFrame.Frame.Frame.Title.Text == "Luna Interface Suite" and Release or "Luna UI"
+	LoadingFrame.Version.Text = LoadingFrame.Frame.Frame.Title.Text == "Nebula Interface Suite" and Release or "Nebula UI"
 
 	Navigation.Player.icon.ImageLabel.Image = Players:GetUserThumbnailAsync(Players.LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size48x48)
 	Navigation.Player.Namez.Text = Players.LocalPlayer.DisplayName
@@ -2367,7 +2366,7 @@ function Luna:CreateWindow(WindowSettings)
 	-- 	LoadAutoLoad(WindowSettings.ConfigSettings.ConfigFolder, WindowSettings.ConfigSettings.RootFolder)
 	-- end)
 
-	LunaUI.Enabled = true
+	NebulaUI.Enabled = true
 
 	BlurModule(Main)
 
@@ -2375,7 +2374,7 @@ function Luna:CreateWindow(WindowSettings)
 		local KeySettings = WindowSettings.KeySettings
 		
 		Draggable(Dragger, Main)
-		Draggable(LunaUI.MobileSupport, LunaUI.MobileSupport)
+		Draggable(NebulaUI.MobileSupport, NebulaUI.MobileSupport)
 		if dragBar then Draggable(dragInteract, Main, true, 255) end
 
 		if not WindowSettings.KeySettings then
@@ -2387,11 +2386,11 @@ function Luna:CreateWindow(WindowSettings)
 
 		if typeof(WindowSettings.KeySettings.Key) == "string" then WindowSettings.KeySettings.Key = {WindowSettings.KeySettings.Key} end
 
-		local direc = WindowSettings.KeySettings.SaveInRoot and "Luna/Configurations/" .. WindowSettings.ConfigSettings.RootFolder .. "/" .. WindowSettings.ConfigSettings.ConfigFolder .. "/Key System/" or "Luna/Configurations/" ..  WindowSettings.ConfigSettings.ConfigFolder .. "/Key System/"
+		local direc = WindowSettings.KeySettings.SaveInRoot and "Nebula/Configurations/" .. WindowSettings.ConfigSettings.RootFolder .. "/" .. WindowSettings.ConfigSettings.ConfigFolder .. "/Key System/" or "Nebula/Configurations/" ..  WindowSettings.ConfigSettings.ConfigFolder .. "/Key System/"
 
-		if isfile and isfile(direc .. WindowSettings.KeySettings.FileName .. ".luna") then
+		if isfile and isfile(direc .. WindowSettings.KeySettings.FileName .. ".nebula") then
 			for i, Key in ipairs(WindowSettings.KeySettings.Key) do
-				if string.find(readfile(direc .. WindowSettings.KeySettings.FileName .. ".luna"), Key) then
+				if string.find(readfile(direc .. WindowSettings.KeySettings.FileName .. ".nebula"), Key) then
 					Passthrough = true
 					break
 				end
@@ -2475,9 +2474,9 @@ function Luna:CreateWindow(WindowSettings)
 					KeySystem.Visible = false
 					if WindowSettings.KeySettings.SaveKey then
 						if writefile then
-							writefile(direc .. WindowSettings.KeySettings.FileName .. ".luna", FoundKey)
+							writefile(direc .. WindowSettings.KeySettings.FileName .. ".nebula", FoundKey)
 						end
-						Luna:Notification({Title = "Key System", Content = "The key for this script has been saved successfully.", Icon = "lock_open"})
+						Nebula:Notification({Title = "Key System", Content = "The key for this script has been saved successfully.", Icon = "lock_open"})
 					end
 				else
 					if AttemptsRemaining == 0 then
@@ -2494,7 +2493,7 @@ function Luna:CreateWindow(WindowSettings)
 
 			KeySystem.Close.MouseButton1Click:Connect(function()
 				
-				Luna:Destroy()
+				Nebula:Destroy()
 			end)
 		end
 	end
@@ -2536,7 +2535,7 @@ function Luna:CreateWindow(WindowSettings)
 	LoadingFrame.Visible = false
 
 	Draggable(Dragger, Main)
-	Draggable(LunaUI.MobileSupport, LunaUI.MobileSupport)
+	Draggable(NebulaUI.MobileSupport, NebulaUI.MobileSupport)
 	if dragBar then Draggable(dragInteract, Main, true, 255) end
 
 	Elements.Template.LayoutOrder = 1000000000
@@ -2599,7 +2598,7 @@ function Luna:CreateWindow(WindowSettings)
 
 		HomeTabPage.detailsholder.dashboard.Client.Title.Text = (isStudio and "Debugging (Studio)" or identifyexecutor()) or "Your Executor Does Not Support identifyexecutor."
 		for i,v in pairs(HomeTabSettings.SupportedExecutors) do
-			if isStudio then HomeTabPage.detailsholder.dashboard.Client.Subtitle.Text = "Luna Interface Suite - Debugging Mode" break end
+			if isStudio then HomeTabPage.detailsholder.dashboard.Client.Subtitle.Text = "Nebula Interface Suite - Debugging Mode" break end
 			if v == identifyexecutor() then
 				HomeTabPage.detailsholder.dashboard.Client.Subtitle.Text = "Your Executor Supports This Script."
 				break
@@ -2878,7 +2877,7 @@ function Luna:CreateWindow(WindowSettings)
 						TweenService:Create(Button, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Button.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Button.Title.Text = "Callback Error"
-						print("Luna Interface Suite | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
+						print("Nebula Interface Suite | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						Button.Title.Text = ButtonSettings.Name
 						TweenService:Create(Button, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3142,7 +3141,7 @@ function Luna:CreateWindow(WindowSettings)
 									TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 									TweenService:Create(Slider.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 									Slider.Title.Text = "Callback Error"
-									print("Luna Interface Suite | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
+									print("Nebula Interface Suite | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
 									wait(0.5)
 									Slider.Title.Text = SliderSettings.Name
 									TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3152,7 +3151,7 @@ function Luna:CreateWindow(WindowSettings)
 
 								SliderSettings.CurrentValue = NewValue
 								SliderV.CurrentValue = SliderSettings.CurrentValue
-								-- Luna.Flags[SliderSettings.Flag] = SliderSettings
+								-- Nebula.Flags[SliderSettings.Flag] = SliderSettings
 							end
 						else
 							TweenService:Create(Slider.Main.Progress, TweenInfo.new(0.1, Enum.EasingStyle.Back, Enum.EasingDirection.In, 0, false), {Size = UDim2.new(0, Location - Slider.Main.AbsolutePosition.X > 5 and Location - Slider.Main.AbsolutePosition.X or 5, 1, 0)}):Play()
@@ -3175,7 +3174,7 @@ function Luna:CreateWindow(WindowSettings)
 						TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Slider.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Slider.Title.Text = "Callback Error"
-						print("Luna Interface Suite | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
+						print("Nebula Interface Suite | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						Slider.Title.Text = SliderSettings.Name
 						TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3185,7 +3184,7 @@ function Luna:CreateWindow(WindowSettings)
 
 					SliderSettings.CurrentValue = NewVal
 					SliderV.CurrentValue = SliderSettings.CurrentValue
-					-- Luna.Flags[SliderSettings.Flag] = SliderSettings
+					-- Nebula.Flags[SliderSettings.Flag] = SliderSettings
 
 				end
 
@@ -3220,7 +3219,7 @@ function Luna:CreateWindow(WindowSettings)
 
 					Set()
 
-					-- Luna.Flags[SliderSettings.Flag] = SliderSettings
+					-- Nebula.Flags[SliderSettings.Flag] = SliderSettings
 				end
 
 				function SliderV:Destroy()
@@ -3229,12 +3228,12 @@ function Luna:CreateWindow(WindowSettings)
 				end
 
 				if Flag then
-					Luna.Options[Flag] = SliderV
+					Nebula.Options[Flag] = SliderV
 				end
 
-				LunaUI.ThemeRemote:GetPropertyChangedSignal("Value"):Connect(function()
-					Slider.Main.color.Color = Luna.ThemeGradient
-					Slider.Main.UIStroke.color.Color = Luna.ThemeGradient
+				NebulaUI.ThemeRemote:GetPropertyChangedSignal("Value"):Connect(function()
+					Slider.Main.color.Color = Nebula.ThemeGradient
+					Slider.Main.UIStroke.color.Color = Nebula.ThemeGradient
 				end)
 
 				return SliderV
@@ -3320,7 +3319,7 @@ function Luna:CreateWindow(WindowSettings)
 						TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Toggle.Title.Text = "Callback Error"
-						print("Luna Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+						print("Nebula Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						Toggle.Title.Text = ToggleSettings.Name
 						TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3347,7 +3346,7 @@ function Luna:CreateWindow(WindowSettings)
 						TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Toggle.Title.Text = "Callback Error"
-						print("Luna Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+						print("Nebula Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						Toggle.Title.Text = ToggleSettings.Name
 						TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3391,7 +3390,7 @@ function Luna:CreateWindow(WindowSettings)
 						TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 0}):Play()
 						Toggle.Title.Text = "Callback Error"
-						print("Luna Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+						print("Nebula Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						Toggle.Title.Text = ToggleSettings.Name
 						TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3405,13 +3404,13 @@ function Luna:CreateWindow(WindowSettings)
 					Toggle:Destroy()
 				end
 
-				LunaUI.ThemeRemote:GetPropertyChangedSignal("Value"):Connect(function()
-					Toggle.toggle.color.Color = Luna.ThemeGradient
-					Toggle.toggle.UIStroke.color.Color = Luna.ThemeGradient
+				NebulaUI.ThemeRemote:GetPropertyChangedSignal("Value"):Connect(function()
+					Toggle.toggle.color.Color = Nebula.ThemeGradient
+					Toggle.toggle.UIStroke.color.Color = Nebula.ThemeGradient
 				end)
 
 				if Flag then
-					Luna.Options[Flag] = ToggleV
+					Nebula.Options[Flag] = ToggleV
 				end
 
 				return ToggleV
@@ -3513,7 +3512,7 @@ function Luna:CreateWindow(WindowSettings)
 								TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 								TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 								Bind.Title.Text = "Callback Error"
-								print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+								print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 								wait(0.5)
 								Bind.Title.Text = BindSettings.Name
 								TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3542,7 +3541,7 @@ function Luna:CreateWindow(WindowSettings)
 								TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 								TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 								Bind.Title.Text = "Callback Error"
-								print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+								print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 								wait(0.5)
 								Bind.Title.Text = BindSettings.Name
 								TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3562,7 +3561,7 @@ function Luna:CreateWindow(WindowSettings)
 											TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 											TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 											Bind.Title.Text = "Callback Error"
-											print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+											print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 											wait(0.5)
 											Bind.Title.Text = BindSettings.Name
 											TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3579,7 +3578,7 @@ function Luna:CreateWindow(WindowSettings)
 											TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 											TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 											Bind.Title.Text = "Callback Error"
-											print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+											print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 											wait(0.5)
 											Bind.Title.Text = BindSettings.Name
 											TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3629,10 +3628,10 @@ function Luna:CreateWindow(WindowSettings)
 				end
 
 				if Flag then
-					Luna.Options[Flag] = BindV
+					Nebula.Options[Flag] = BindV
 				end
 
-				-- Luna.Flags[BindSettings.Flag] = BindSettings
+				-- Nebula.Flags[BindSettings.Flag] = BindSettings
 
 				return BindV
 
@@ -3709,7 +3708,7 @@ function Luna:CreateWindow(WindowSettings)
 								TweenService:Create(Input, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 								TweenService:Create(Input.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 								Input.Title.Text = "Callback Error"
-								print("Luna Interface Suite | "..InputSettings.Name.." Callback Error " ..tostring(Response))
+								print("Nebula Interface Suite | "..InputSettings.Name.." Callback Error " ..tostring(Response))
 								wait(0.5)
 								Input.Title.Text = InputSettings.Name
 								TweenService:Create(Input, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3750,7 +3749,7 @@ function Luna:CreateWindow(WindowSettings)
 							TweenService:Create(Input, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 							TweenService:Create(Input.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 							Input.Title.Text = "Callback Error"
-							print("Luna Interface Suite | "..InputSettings.Name.." Callback Error " ..tostring(Response))
+							print("Nebula Interface Suite | "..InputSettings.Name.." Callback Error " ..tostring(Response))
 							wait(0.5)
 							Input.Title.Text = InputSettings.Name
 							TweenService:Create(Input, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -3797,7 +3796,7 @@ function Luna:CreateWindow(WindowSettings)
 				end
 
 				if Flag then
-					Luna.Options[Flag] = InputV
+					Nebula.Options[Flag] = InputV
 				end
 
 
@@ -3870,7 +3869,7 @@ function Luna:CreateWindow(WindowSettings)
 						TweenService:Create(Dropdown, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Dropdown.Title.Text = "Callback Error"
-						print("Luna Interface Suite | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
+						print("Nebula Interface Suite | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						Dropdown.Title.Text = DropdownSettings.Name
 						TweenService:Create(Dropdown, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -4139,7 +4138,7 @@ function Luna:CreateWindow(WindowSettings)
 					end
 					Dropdown.Selected.Text = ""
 
-					-- Luna.Flags[DropdownSettings.Flag] = DropdownSettings
+					-- Nebula.Flags[DropdownSettings.Flag] = DropdownSettings
 
 				end
 
@@ -4149,10 +4148,10 @@ function Luna:CreateWindow(WindowSettings)
 				end
 
 				if Flag then
-					Luna.Options[Flag] = DropdownV
+					Nebula.Options[Flag] = DropdownV
 				end
 
-				-- Luna.Flags[DropdownSettings.Flag] = DropdownSettings
+				-- Nebula.Flags[DropdownSettings.Flag] = DropdownSettings
 
 				return DropdownV
 
@@ -4211,7 +4210,7 @@ function Luna:CreateWindow(WindowSettings)
 						TweenService:Create(ColorPicker, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(ColorPicker.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						ColorPicker.Title.Text = "Callback Error"
-						print("Luna Interface Suite | "..ColorPickerSettings.Name.." Callback Error " ..tostring(Response))
+						print("Nebula Interface Suite | "..ColorPickerSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						ColorPicker.Title.Text = ColorPickerSettings.Name
 						TweenService:Create(ColorPicker, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -4398,7 +4397,7 @@ function Luna:CreateWindow(WindowSettings)
 				end
 
 				if Flag then
-					Luna.Options[Flag] = ColorPickerV
+					Nebula.Options[Flag] = ColorPickerV
 				end
 
 				SafeCallback(ColorPickerSettings.Color)
@@ -4470,7 +4469,7 @@ function Luna:CreateWindow(WindowSettings)
 					TweenService:Create(Button, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Button.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 					Button.Title.Text = "Callback Error"
-					print("Luna Interface Suite | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
+					print("Nebula Interface Suite | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Button.Title.Text = ButtonSettings.Name
 					TweenService:Create(Button, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -4731,7 +4730,7 @@ function Luna:CreateWindow(WindowSettings)
 								TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 								TweenService:Create(Slider.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 								Slider.Title.Text = "Callback Error"
-								print("Luna Interface Suite | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
+								print("Nebula Interface Suite | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
 								wait(0.5)
 								Slider.Title.Text = SliderSettings.Name
 								TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -4741,7 +4740,7 @@ function Luna:CreateWindow(WindowSettings)
 
 							SliderSettings.CurrentValue = NewValue
 							SliderV.CurrentValue = SliderSettings.CurrentValue
-							-- Luna.Flags[SliderSettings.Flag] = SliderSettings
+							-- Nebula.Flags[SliderSettings.Flag] = SliderSettings
 						end
 					else
 						TweenService:Create(Slider.Main.Progress, TweenInfo.new(0.1, Enum.EasingStyle.Back, Enum.EasingDirection.In, 0, false), {Size = UDim2.new(0, Location - Slider.Main.AbsolutePosition.X > 5 and Location - Slider.Main.AbsolutePosition.X or 5, 1, 0)}):Play()
@@ -4764,7 +4763,7 @@ function Luna:CreateWindow(WindowSettings)
 					TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Slider.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 					Slider.Title.Text = "Callback Error"
-					print("Luna Interface Suite | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
+					print("Nebula Interface Suite | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Slider.Title.Text = SliderSettings.Name
 					TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -4774,7 +4773,7 @@ function Luna:CreateWindow(WindowSettings)
 
 				SliderSettings.CurrentValue = NewVal
 				SliderV.CurrentValue = SliderSettings.CurrentValue
-				-- Luna.Flags[SliderSettings.Flag] = SliderSettings
+				-- Nebula.Flags[SliderSettings.Flag] = SliderSettings
 
 			end
 
@@ -4809,7 +4808,7 @@ function Luna:CreateWindow(WindowSettings)
 
 				Set()
 
-				-- Luna.Flags[SliderSettings.Flag] = SliderSettings
+				-- Nebula.Flags[SliderSettings.Flag] = SliderSettings
 			end
 
 			function SliderV:Destroy()
@@ -4818,12 +4817,12 @@ function Luna:CreateWindow(WindowSettings)
 			end
 
 			if Flag then
-				Luna.Options[Flag] = SliderV
+				Nebula.Options[Flag] = SliderV
 			end
 
-			LunaUI.ThemeRemote:GetPropertyChangedSignal("Value"):Connect(function()
-				Slider.Main.color.Color = Luna.ThemeGradient
-				Slider.Main.UIStroke.color.Color = Luna.ThemeGradient
+			NebulaUI.ThemeRemote:GetPropertyChangedSignal("Value"):Connect(function()
+				Slider.Main.color.Color = Nebula.ThemeGradient
+				Slider.Main.UIStroke.color.Color = Nebula.ThemeGradient
 			end)
 
 			return SliderV
@@ -4908,7 +4907,7 @@ function Luna:CreateWindow(WindowSettings)
 					TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 					Toggle.Title.Text = "Callback Error"
-					print("Luna Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+					print("Nebula Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Toggle.Title.Text = ToggleSettings.Name
 					TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -4935,7 +4934,7 @@ function Luna:CreateWindow(WindowSettings)
 					TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 					Toggle.Title.Text = "Callback Error"
-					print("Luna Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+					print("Nebula Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Toggle.Title.Text = ToggleSettings.Name
 					TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -4979,7 +4978,7 @@ function Luna:CreateWindow(WindowSettings)
 					TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 0}):Play()
 					Toggle.Title.Text = "Callback Error"
-					print("Luna Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+					print("Nebula Interface Suite | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Toggle.Title.Text = ToggleSettings.Name
 					TweenService:Create(Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -4993,13 +4992,13 @@ function Luna:CreateWindow(WindowSettings)
 				Toggle:Destroy()
 			end
 
-			LunaUI.ThemeRemote:GetPropertyChangedSignal("Value"):Connect(function()
-				Toggle.toggle.color.Color = Luna.ThemeGradient
-				Toggle.toggle.UIStroke.color.Color = Luna.ThemeGradient
+			NebulaUI.ThemeRemote:GetPropertyChangedSignal("Value"):Connect(function()
+				Toggle.toggle.color.Color = Nebula.ThemeGradient
+				Toggle.toggle.UIStroke.color.Color = Nebula.ThemeGradient
 			end)
 
 			if Flag then
-				Luna.Options[Flag] = ToggleV
+				Nebula.Options[Flag] = ToggleV
 			end
 
 			return ToggleV
@@ -5100,7 +5099,7 @@ function Luna:CreateWindow(WindowSettings)
 							TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 							TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 							Bind.Title.Text = "Callback Error"
-							print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+							print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 							wait(0.5)
 							Bind.Title.Text = BindSettings.Name
 							TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -5129,7 +5128,7 @@ function Luna:CreateWindow(WindowSettings)
 							TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 							TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 							Bind.Title.Text = "Callback Error"
-							print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+							print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 							wait(0.5)
 							Bind.Title.Text = BindSettings.Name
 							TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -5149,7 +5148,7 @@ function Luna:CreateWindow(WindowSettings)
 										TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 										TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 										Bind.Title.Text = "Callback Error"
-										print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+										print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 										wait(0.5)
 										Bind.Title.Text = BindSettings.Name
 										TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -5166,7 +5165,7 @@ function Luna:CreateWindow(WindowSettings)
 										TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 										TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 										Bind.Title.Text = "Callback Error"
-										print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+										print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 										wait(0.5)
 										Bind.Title.Text = BindSettings.Name
 										TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -5216,10 +5215,10 @@ function Luna:CreateWindow(WindowSettings)
 			end
 
 			if Flag then
-				Luna.Options[Flag] = BindV
+				Nebula.Options[Flag] = BindV
 			end
 
-			-- Luna.Flags[BindSettings.Flag] = BindSettings
+			-- Nebula.Flags[BindSettings.Flag] = BindSettings
 
 			return BindV
 
@@ -5327,7 +5326,7 @@ function Luna:CreateWindow(WindowSettings)
 							TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 							TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 							Bind.Title.Text = "Callback Error"
-							print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+							print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 							wait(0.5)
 							Bind.Title.Text = BindSettings.Name
 							TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -5347,7 +5346,7 @@ function Luna:CreateWindow(WindowSettings)
 										TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 										TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 										Bind.Title.Text = "Callback Error"
-										print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+										print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 										wait(0.5)
 										Bind.Title.Text = BindSettings.Name
 										TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -5364,7 +5363,7 @@ function Luna:CreateWindow(WindowSettings)
 										TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 										TweenService:Create(Bind.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 										Bind.Title.Text = "Callback Error"
-										print("Luna Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
+										print("Nebula Interface Suite | "..BindSettings.Name.." Callback Error " ..tostring(Response))
 										wait(0.5)
 										Bind.Title.Text = BindSettings.Name
 										TweenService:Create(Bind, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -5404,7 +5403,7 @@ function Luna:CreateWindow(WindowSettings)
 				Bind.BindFrame.BindBox.Text = BindSettings.CurrentBind
 				Bind.BindFrame.BindBox.Size = UDim2.new(0, Bind.BindFrame.BindBox.TextBounds.X + 16, 0, 42)
 
-				-- Luna.Flags[BindSettings.Flag] = BindSettings
+				-- Nebula.Flags[BindSettings.Flag] = BindSettings
 
 			end
 
@@ -5413,7 +5412,7 @@ function Luna:CreateWindow(WindowSettings)
 				Bind:Destroy()
 			end
 
-			-- Luna.Flags[BindSettings.Flag] = BindSettings
+			-- Nebula.Flags[BindSettings.Flag] = BindSettings
 
 			return BindV
 
@@ -5489,7 +5488,7 @@ function Luna:CreateWindow(WindowSettings)
 							TweenService:Create(Input, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 							TweenService:Create(Input.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 							Input.Title.Text = "Callback Error"
-							print("Luna Interface Suite | "..InputSettings.Name.." Callback Error " ..tostring(Response))
+							print("Nebula Interface Suite | "..InputSettings.Name.." Callback Error " ..tostring(Response))
 							wait(0.5)
 							Input.Title.Text = InputSettings.Name
 							TweenService:Create(Input, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -5530,7 +5529,7 @@ function Luna:CreateWindow(WindowSettings)
 						TweenService:Create(Input, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Input.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Input.Title.Text = "Callback Error"
-						print("Luna Interface Suite | "..InputSettings.Name.." Callback Error " ..tostring(Response))
+						print("Nebula Interface Suite | "..InputSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						Input.Title.Text = InputSettings.Name
 						TweenService:Create(Input, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -5577,7 +5576,7 @@ function Luna:CreateWindow(WindowSettings)
 			end
 
 			if Flag then
-				Luna.Options[Flag] = InputV
+				Nebula.Options[Flag] = InputV
 			end
 
 
@@ -5649,7 +5648,7 @@ function Luna:CreateWindow(WindowSettings)
 					TweenService:Create(Dropdown, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 					Dropdown.Title.Text = "Callback Error"
-					print("Luna Interface Suite | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
+					print("Nebula Interface Suite | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Dropdown.Title.Text = DropdownSettings.Name
 					TweenService:Create(Dropdown, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -5918,7 +5917,7 @@ function Luna:CreateWindow(WindowSettings)
 				end
 				Dropdown.Selected.Text = ""
 
-				-- Luna.Flags[DropdownSettings.Flag] = DropdownSettings
+				-- Nebula.Flags[DropdownSettings.Flag] = DropdownSettings
 
 			end
 
@@ -5928,10 +5927,10 @@ function Luna:CreateWindow(WindowSettings)
 			end
 
 			if Flag then
-				Luna.Options[Flag] = DropdownV
+				Nebula.Options[Flag] = DropdownV
 			end
 
-			-- Luna.Flags[DropdownSettings.Flag] = DropdownSettings
+			-- Nebula.Flags[DropdownSettings.Flag] = DropdownSettings
 
 			return DropdownV
 
@@ -5989,7 +5988,7 @@ function Luna:CreateWindow(WindowSettings)
 					TweenService:Create(ColorPicker, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(ColorPicker.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 					ColorPicker.Title.Text = "Callback Error"
-					print("Luna Interface Suite | "..ColorPickerSettings.Name.." Callback Error " ..tostring(Response))
+					print("Nebula Interface Suite | "..ColorPickerSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					ColorPicker.Title.Text = ColorPickerSettings.Name
 					TweenService:Create(ColorPicker, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.5}):Play()
@@ -6176,7 +6175,7 @@ function Luna:CreateWindow(WindowSettings)
 			end
 
 			if Flag then
-				Luna.Options[Flag] = ColorPickerV
+				Nebula.Options[Flag] = ColorPickerV
 			end
 
 			SafeCallback(ColorPickerSettings.Color)
@@ -6223,7 +6222,7 @@ function Luna:CreateWindow(WindowSettings)
 				Description = "Create a config with all of your current settings.",
 				Callback = function()
 					if not inputPath or string.gsub(inputPath, " ", "") == "" then
-						Luna:Notification({
+						Nebula:Notification({
 							Title = "Interface",
 							Icon = "warning",
 							ImageSource = "Material",
@@ -6232,9 +6231,9 @@ function Luna:CreateWindow(WindowSettings)
 						return
 					end
 
-					local success, returned = Luna:SaveConfig(inputPath)
+					local success, returned = Nebula:SaveConfig(inputPath)
 					if not success then
-						Luna:Notification({
+						Nebula:Notification({
 							Title = "Interface",
 							Icon = "error",
 							ImageSource = "Material",
@@ -6242,14 +6241,14 @@ function Luna:CreateWindow(WindowSettings)
 						})
 					end
 
-					Luna:Notification({
+					Nebula:Notification({
 						Title = "Interface",
 						Icon = "info",
 						ImageSource = "Material",
 						Content = string.format("Created config %q", inputPath),
 					})
 
-					configSelection:Set({ Options = Luna:RefreshConfigList() })
+					configSelection:Set({ Options = Nebula:RefreshConfigList() })
 				end
 			})
 
@@ -6259,7 +6258,7 @@ function Luna:CreateWindow(WindowSettings)
 			configSelection = Tab:CreateDropdown({
 				Name = "Select Config",
 				Description = "Select a config to load your settings on.",
-				Options = Luna:RefreshConfigList(),
+				Options = Nebula:RefreshConfigList(),
 				CurrentOption = {},
 				MultipleOptions = false,
 				SpecialType = nil,
@@ -6272,9 +6271,9 @@ function Luna:CreateWindow(WindowSettings)
 				Name = "Load Config",
 				Description = "Load your saved config settings.",
 				Callback = function()
-					local success, returned = Luna:LoadConfig(selectedConfig)
+					local success, returned = Nebula:LoadConfig(selectedConfig)
 					if not success then
-						Luna:Notification({
+						Nebula:Notification({
 							Title = "Interface",
 							Icon = "error",
 							ImageSource = "Material",
@@ -6283,7 +6282,7 @@ function Luna:CreateWindow(WindowSettings)
 						return
 					end
 
-					Luna:Notification({
+					Nebula:Notification({
 						Title = "Interface",
 						Icon = "info",
 						ImageSource = "Material",
@@ -6296,9 +6295,9 @@ function Luna:CreateWindow(WindowSettings)
 				Name = "Overwrite Config",
 				Description = "Overwrite your current config settings.",
 				Callback = function()
-					local success, returned = Luna:SaveConfig(selectedConfig)
+					local success, returned = Nebula:SaveConfig(selectedConfig)
 					if not success then
-						Luna:Notification({
+						Nebula:Notification({
 							Title = "Interface",
 							Icon = "error",
 							ImageSource = "Material",
@@ -6307,7 +6306,7 @@ function Luna:CreateWindow(WindowSettings)
 						return
 					end
 
-					Luna:Notification({
+					Nebula:Notification({
 						Title = "Interface",
 						Icon = "info",
 						ImageSource = "Material",
@@ -6320,7 +6319,7 @@ function Luna:CreateWindow(WindowSettings)
 				Name = "Refresh Config List",
 				Description = "Refresh the current config list.",
 				Callback = function()
-					configSelection:Set({ Options = Luna:RefreshConfigList() })
+					configSelection:Set({ Options = Nebula:RefreshConfigList() })
 				end,
 			})
 
@@ -6330,10 +6329,10 @@ function Luna:CreateWindow(WindowSettings)
 				Description = "Set a config to auto load setting in your next session.",
 				Callback = function()
 					local name = selectedConfig
-					writefile(Luna.Folder .. "/settings/autoload.txt", name)
+					writefile(Nebula.Folder .. "/settings/autoload.txt", name)
 					loadlabel:Set({ Text = "Current autoload config: " .. name })
 
-					Luna:Notification({
+					Nebula:Notification({
 						Title = "Interface",
 						Icon = "info",
 						ImageSource = "Material",
@@ -6352,10 +6351,10 @@ function Luna:CreateWindow(WindowSettings)
 				Description = "Delete The Autoload File",
 				Callback = function()
 					local name = selectedConfig
-					delfile(Luna.Folder .. "/settings/autoload.txt")
+					delfile(Nebula.Folder .. "/settings/autoload.txt")
 					loadlabel:Set({ Text = "None" })
 
-					Luna:Notification({
+					Nebula:Notification({
 						Title = "Interface",
 						Icon = "info",
 						ImageSource = "Material",
@@ -6364,8 +6363,8 @@ function Luna:CreateWindow(WindowSettings)
 				end,
 			})
 
-			if isfile(Luna.Folder .. "/settings/autoload.txt") then
-				local name = readfile(Luna.Folder .. "/settings/autoload.txt")
+			if isfile(Nebula.Folder .. "/settings/autoload.txt") then
+				local name = readfile(Nebula.Folder .. "/settings/autoload.txt")
 				loadlabel:Set( { Text = "Current autoload config: " .. name })
 			end     
 		end
@@ -6380,8 +6379,8 @@ function Luna:CreateWindow(WindowSettings)
 					}
 				end,
 				Load = function(Flag, data)
-					if Luna.Options[Flag] then
-						Luna.Options[Flag]:Set({ CurrentValue = data.state })
+					if Nebula.Options[Flag] then
+						Nebula.Options[Flag]:Set({ CurrentValue = data.state })
 					end
 				end
 			},
@@ -6394,8 +6393,8 @@ function Luna:CreateWindow(WindowSettings)
 					}
 				end,
 				Load = function(Flag, data)
-					if Luna.Options[Flag] and data.value then
-						Luna.Options[Flag]:Set({ CurrentValue = data.value })
+					if Nebula.Options[Flag] and data.value then
+						Nebula.Options[Flag]:Set({ CurrentValue = data.value })
 					end
 				end
 			},
@@ -6408,8 +6407,8 @@ function Luna:CreateWindow(WindowSettings)
 					}
 				end,
 				Load = function(Flag, data)
-					if Luna.Options[Flag] and data.text and type(data.text) == "string" then
-						Luna.Options[Flag]:Set({ CurrentValue = data.text })
+					if Nebula.Options[Flag] and data.text and type(data.text) == "string" then
+						Nebula.Options[Flag]:Set({ CurrentValue = data.text })
 					end
 				end
 			},
@@ -6422,8 +6421,8 @@ function Luna:CreateWindow(WindowSettings)
 					}
 				end,
 				Load = function(Flag, data)
-					if Luna.Options[Flag] and data.value then
-						Luna.Options[Flag]:Set({ CurrentOption = data.value })
+					if Nebula.Options[Flag] and data.value then
+						Nebula.Options[Flag]:Set({ CurrentOption = data.value })
 					end
 				end
 			},
@@ -6449,8 +6448,8 @@ function Luna:CreateWindow(WindowSettings)
 						return Color3.new(r, g, b)
 					end
 
-					if Luna.Options[Flag] and data.color then
-						Luna.Options[Flag]:Set({Color = HexToColor3(data.color)})
+					if Nebula.Options[Flag] and data.color then
+						Nebula.Options[Flag]:Set({Color = HexToColor3(data.color)})
 					end
 				end
 			}
@@ -6471,25 +6470,25 @@ function Luna:CreateWindow(WindowSettings)
 			local c1cp = Tab:CreateColorPicker({
 				Name = "Color 1",
 				Color = Color3.fromRGB(117, 164, 206),
-			}, "LunaInterfaceSuitePrebuiltCPC1") -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+			}, "NebulaInterfaceSuitePrebuiltCPC1") -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
 
 			local c2cp = Tab:CreateColorPicker({
 				Name = "Color 2",
 				Color = Color3.fromRGB(123, 201, 201),
-			}, "LunaInterfaceSuitePrebuiltCPC2")
+			}, "NebulaInterfaceSuitePrebuiltCPC2")
 
 			local c3cp = Tab:CreateColorPicker({
 				Name = "Color 3",
 				Color = Color3.fromRGB(224, 138, 184),
-			}, "LunaInterfaceSuitePrebuiltCPC3") 
+			}, "NebulaInterfaceSuitePrebuiltCPC3") 
 
 			task.wait(1)
 
 			c1cp:Set({
 				Callback = function(Value)
 					if c2cp and c3cp then
-						Luna.ThemeGradient = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Value or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(0.50, c2cp.Color or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(1.00, c3cp.Color or Color3.fromRGB(255,255,255))}
-						LunaUI.ThemeRemote.Value = not LunaUI.ThemeRemote.Value
+						Nebula.ThemeGradient = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Value or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(0.50, c2cp.Color or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(1.00, c3cp.Color or Color3.fromRGB(255,255,255))}
+						NebulaUI.ThemeRemote.Value = not NebulaUI.ThemeRemote.Value
 					end
 				end
 			})
@@ -6497,8 +6496,8 @@ function Luna:CreateWindow(WindowSettings)
 			c2cp:Set({
 				Callback = function(Value)
 					if c1cp and c3cp then
-						Luna.ThemeGradient = ColorSequence.new{ColorSequenceKeypoint.new(0.00, c1cp.Color or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(0.50, Value or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(1.00, c3cp.Color or Color3.fromRGB(255,255,255))}
-						LunaUI.ThemeRemote.Value = not LunaUI.ThemeRemote.Value
+						Nebula.ThemeGradient = ColorSequence.new{ColorSequenceKeypoint.new(0.00, c1cp.Color or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(0.50, Value or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(1.00, c3cp.Color or Color3.fromRGB(255,255,255))}
+						NebulaUI.ThemeRemote.Value = not NebulaUI.ThemeRemote.Value
 					end
 				end
 			})
@@ -6506,8 +6505,8 @@ function Luna:CreateWindow(WindowSettings)
 			c3cp:Set({
 				Callback = function(Valuex)
 					if c2cp and c1cp then
-						Luna.ThemeGradient = ColorSequence.new{ColorSequenceKeypoint.new(0.00, c1cp.Color or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(0.50, c2cp.Color or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(1.00, Valuex or Color3.fromRGB(255,255,255))}
-						LunaUI.ThemeRemote.Value = not LunaUI.ThemeRemote.Value
+						Nebula.ThemeGradient = ColorSequence.new{ColorSequenceKeypoint.new(0.00, c1cp.Color or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(0.50, c2cp.Color or Color3.fromRGB(255,255,255)), ColorSequenceKeypoint.new(1.00, Valuex or Color3.fromRGB(255,255,255))}
+						NebulaUI.ThemeRemote.Value = not NebulaUI.ThemeRemote.Value
 					end
 				end
 			})
@@ -6531,8 +6530,8 @@ function Luna:CreateWindow(WindowSettings)
 		local function BuildFolderTree()
 			if isStudio then return "Config system unavailable." end
 			local paths = {
-				Luna.Folder,
-				Luna.Folder .. "/settings"
+				Nebula.Folder,
+				Nebula.Folder .. "/settings"
 			}
 
 			for i = 1, #paths do
@@ -6548,9 +6547,9 @@ function Luna:CreateWindow(WindowSettings)
 			if isStudio then return "Config system unavailable." end
 
 			if WindowSettings.ConfigSettings.RootFolder ~= nil and WindowSettings.ConfigSettings.RootFolder ~= "" then
-				Luna.Folder = WindowSettings.ConfigSettings.RootFolder .. "/" .. WindowSettings.ConfigSettings.ConfigFolder
+				Nebula.Folder = WindowSettings.ConfigSettings.RootFolder .. "/" .. WindowSettings.ConfigSettings.ConfigFolder
 			else
-				Luna.Folder = WindowSettings.ConfigSettings.ConfigFolder
+				Nebula.Folder = WindowSettings.ConfigSettings.ConfigFolder
 			end
 
 			BuildFolderTree()
@@ -6558,20 +6557,20 @@ function Luna:CreateWindow(WindowSettings)
 
 		SetFolder()
 
-		function Luna:SaveConfig(Path)
+		function Nebula:SaveConfig(Path)
 			if isStudio then return "Config system unavailable." end
 
 			if (not Path) then
 				return false, "Please select a config file."
 			end
 
-			local fullPath = Luna.Folder .. "/settings/" .. Path .. ".luna"
+			local fullPath = Nebula.Folder .. "/settings/" .. Path .. ".nebula"
 
 			local data = {
 				objects = {}
 			}
 
-			for flag, option in next, Luna.Options do
+			for flag, option in next, Nebula.Options do
 				if not ClassParser[option.Class] then continue end
 				if option.IgnoreConfig then continue end
 
@@ -6587,14 +6586,14 @@ function Luna:CreateWindow(WindowSettings)
 			return true
 		end
 
-		function Luna:LoadConfig(Path)
+		function Nebula:LoadConfig(Path)
 			if isStudio then return "Config system unavailable." end
 
 			if (not Path) then
 				return false, "Please select a config file."
 			end
 
-			local file = Luna.Folder .. "/settings/" .. Path .. ".luna"
+			local file = Nebula.Folder .. "/settings/" .. Path .. ".nebula"
 			if not isfile(file) then return false, "Invalid file" end
 
 			local success, decoded = pcall(HttpService.JSONDecode, HttpService, readfile(file))
@@ -6611,16 +6610,16 @@ function Luna:CreateWindow(WindowSettings)
 			return true
 		end
 
-		function Luna:LoadAutoloadConfig()
-			if isfile(Luna.Folder .. "/settings/autoload.txt") then
+		function Nebula:LoadAutoloadConfig()
+			if isfile(Nebula.Folder .. "/settings/autoload.txt") then
 
 				if isStudio then return "Config system unavailable." end
 
-				local name = readfile(Luna.Folder .. "/settings/autoload.txt")
+				local name = readfile(Nebula.Folder .. "/settings/autoload.txt")
 
-				local success, err = Luna:LoadConfig(name)
+				local success, err = Nebula:LoadConfig(name)
 				if not success then
-					return Luna:Notification({
+					return Nebula:Notification({
 						Title = "Interface",
 						Icon = "sparkle",
 						ImageSource = "Material",
@@ -6628,7 +6627,7 @@ function Luna:CreateWindow(WindowSettings)
 					})
 				end
 
-				Luna:Notification({
+				Nebula:Notification({
 					Title = "Interface",
 					Icon = "sparkle",
 					ImageSource = "Material",
@@ -6638,16 +6637,16 @@ function Luna:CreateWindow(WindowSettings)
 			end 
 		end
 
-		function Luna:RefreshConfigList()
+		function Nebula:RefreshConfigList()
 			if isStudio then return "Config system unavailable." end
 
-			local list = listfiles(Luna.Folder .. "/settings")
+			local list = listfiles(Nebula.Folder .. "/settings")
 
 			local out = {}
 			for i = 1, #list do
 				local file = list[i]
-				if file:sub(-5) == ".luna" then
-					local pos = file:find(".luna", 1, true)
+				if file:sub(-5) == ".nebula" then
+					local pos = file:find(".nebula", 1, true)
 					local start = pos
 
 					local char = file:sub(pos, pos)
@@ -6690,7 +6689,7 @@ function Luna:CreateWindow(WindowSettings)
 		dragBar.Visible = false
 		Window.State = false
 		if UserInputService.KeyboardEnabled == false then
-			LunaUI.MobileSupport.Visible = true
+			NebulaUI.MobileSupport.Visible = true
 		end
 	end)
 	Main.Controls.Close["MouseEnter"]:Connect(function()
@@ -6705,7 +6704,7 @@ function Luna:CreateWindow(WindowSettings)
 		if Window.State then return end
 		if input.KeyCode == Window.Bind then
 			Unhide(Main, Window.CurrentTab)
-			LunaUI.MobileSupport.Visible = false
+			NebulaUI.MobileSupport.Visible = false
 			dragBar.Visible = true
 			Window.State = true
 		end
@@ -6752,17 +6751,17 @@ function Luna:CreateWindow(WindowSettings)
 	end)	
 
 
-	LunaUI.MobileSupport.Interact.MouseButton1Click:Connect(function()
+	NebulaUI.MobileSupport.Interact.MouseButton1Click:Connect(function()
 		Unhide(Main, Window.CurrentTab)
 		dragBar.Visible = true
 		Window.State = true
-		LunaUI.MobileSupport.Visible = false
+		NebulaUI.MobileSupport.Visible = false
 	end)
 
 	return Window
 end
 
-function Luna:Destroy()
+function Nebula:Destroy()
 	Main.Visible = false
 	for _, Notification in ipairs(Notifications:GetChildren()) do
 		if Notification.ClassName == "Frame" then
@@ -6770,25 +6769,25 @@ function Luna:Destroy()
 			Notification:Destroy()
 		end
 	end
-	LunaUI:Destroy()
+	NebulaUI:Destroy()
 end
 
-if (getgenv and not getgenv().ConfirmLuna) or (not getgenv) then
-	Luna:Notification({ 
-    	Title = "Luna Is Deprecated",
+if (getgenv and not getgenv().ConfirmNebula) or (not getgenv) then
+	Nebula:Notification({ 
+    	Title = "Nebula Is Deprecated",
     	Icon = "warning",
     	ImageSource = "Material",
-    	Content = "If you are not the script developer, ignore this message. \n\n The Luna Interface Library Is Deprecated And Not Recommended to Use. A New Library Is Available at nebulasoftworks.xyz/starlight. If you insist on using Luna, set the getgenv().ConfirmLuna variable to true. "
+    	Content = "If you are not the script developer, ignore this message. \n\n The Nebula Interface Library Is Deprecated And Not Recommended to Use. A New Library Is Available at nebulasoftworks.xyz/starlight. If you insist on using Nebula, set the getgenv().ConfirmNebula variable to true. "
 	})
 end
 
 if isStudio then
-	local Window = Luna:CreateWindow({
-		Name = "Nebula Client - Luna Hub | Blade Ball",
+	local Window = Nebula:CreateWindow({
+		Name = "Nebula Client - Nebula Hub | Blade Ball",
 		Subtitle = "by Nebula Softworks",
 		LogoID = "123795201100198",
 		LoadingEnabled = true,
-		LoadingTitle = "Nebula Client (Luna Hub)",
+		LoadingTitle = "Nebula Client (Nebula Hub)",
 		LoadingSubtitle = "Loading script for Blade Ball",
 		KeySystem = true,
 		KeySettings = {
@@ -6806,16 +6805,16 @@ if isStudio then
 		}
 	})
 	
-	--[[local Window = Luna:CreateWindow({
-		Name = "Luna Example Window",
+	--[[local Window = Nebula:CreateWindow({
+		Name = "Nebula Example Window",
 		Subtitle = "Test",
 		LogoID = "6031097225",
 		LoadingEnabled = true,
-		LoadingTitle = "Luna Interface Suite",
+		LoadingTitle = "Nebula Interface Suite",
 		LoadingSubtitle = "by Nebula Softworks",
 		KeySystem = true,
 		KeySettings = {
-			Title = "Luna Example Key",
+			Title = "Nebula Example Key",
 			Subtitle = "Key System",
 			Note = "Please Enter Your Key To Use Example Hub",
 			FileName = "Key", -- the name of the key file. this will be saved in ur RootFolder. However, if you don't have one, it'll save in ur config folder instead
@@ -6824,11 +6823,11 @@ if isStudio then
 		}
 	})
 
-	Luna:Notification({ 
-		Title = "Welcome to Luna",
+	Nebula:Notification({ 
+		Title = "Welcome to Nebula",
 		Icon = "sparkle",
 		ImageSource = "Material",
-		Content = "Welcome to the Luna Interface Suite. This Is an Amazing Quality Freemium UI Library For Roblox Exploiting Made By Nebula Softworks. Luna was Created in hopes of improving the standard of UI Library designs by being the golden standard for it. Luna Has Amazing Features like a key system, notification and perfection in aesthetics and design. So, What Are You Waiting For? Start Using Luna Today at " .. website
+		Content = "Welcome to the Nebula Interface Suite. This Is an Amazing Quality Freemium UI Library For Roblox Exploiting Made By Nebula Softworks. Nebula was Created in hopes of improving the standard of UI Library designs by being the golden standard for it. Nebula Has Amazing Features like a key system, notification and perfection in aesthetics and design. So, What Are You Waiting For? Start Using Nebula Today at " .. website
 	})
 
 	local Tabs = {
@@ -6977,7 +6976,7 @@ if isStudio then
 	})
 	Tabs.Main2:CreateDropdown({
 		Name = "Dropdown - Players",
-		Description = "Luna's Dropdowns Has a built in Player Dropdown!",
+		Description = "Nebula's Dropdowns Has a built in Player Dropdown!",
 		Options = {"u can put anything here, it wont be shown anyway"},
 		CurrentOption = {"same here, itll be the first option"},
 		MultipleOptions = false,
@@ -6996,14 +6995,14 @@ end
 
 -- THIS IS THE DEBUG DEMO, ONLY USED WHEN TESTING NEW ELEMENTS AND CODE
 --[[if isStudio then
-    window = Luna:CreateWindow({LoadingEnabled = false})
+    window = Nebula:CreateWindow({LoadingEnabled = false})
     t1 = window:CreateTab()
     t2 = window:CreateTab({ Name = "Tab 2", Icon = "location_searching"})
-    Luna:Notification({ 
-        Title = "Welcome to Luna",
+    Nebula:Notification({ 
+        Title = "Welcome to Nebula",
         Icon = "sparkle",
         ImageSource = "Material",
-        Content = "Welcome to the Luna Interface Suite. This Is an Amazing Quality Freemium UI Library For Roblox Exploiting Made By Nebula Softworks. Luna was Created in hopes of improving the standard of UI Library designs by being the golden standard for it. Luna Has Amazing Features like a key system, notification and perfection in aesthetics and design. So, What Are You Waiting For? Start Using Luna Today at " .. website
+        Content = "Welcome to the Nebula Interface Suite. This Is an Amazing Quality Freemium UI Library For Roblox Exploiting Made By Nebula Softworks. Nebula was Created in hopes of improving the standard of UI Library designs by being the golden standard for it. Nebula Has Amazing Features like a key system, notification and perfection in aesthetics and design. So, What Are You Waiting For? Start Using Nebula Today at " .. website
     })
     t1:CreateSection()
     local btn = t1:CreateButton({Callback = "", Description = "This Is A Description"})
@@ -7015,7 +7014,7 @@ end
     end})
     t2:CreateLabel({Style = 3})
     t1:CreateParagraph({Text = "Single String"})
-    t1:CreateParagraph({Text = "Welcome to the Luna Interface Suite. This Is an Amazing Quality Freemium UI Library For Roblox Exploiting Made By Nebula Softworks. Luna was Created in hopes of improving the standard of UI Library designs by being the golden standard for it. Luna Has Amazing Features like a key system, notification and perfection in aesthetics and design. So, What Are You Waiting For? Start Using Luna Today at " .. website})
+    t1:CreateParagraph({Text = "Welcome to the Nebula Interface Suite. This Is an Amazing Quality Freemium UI Library For Roblox Exploiting Made By Nebula Softworks. Nebula was Created in hopes of improving the standard of UI Library designs by being the golden standard for it. Nebula Has Amazing Features like a key system, notification and perfection in aesthetics and design. So, What Are You Waiting For? Start Using Nebula Today at " .. website})
     s = t2:CreateSlider({ Callback = function(v) print(v) end })	
     t1:CreateButton({ Callback = function()
         s:Set({Name = "new name", Callback = ""})
@@ -7039,4 +7038,4 @@ end
     t1:CreateDropdown({Callback = function(t) print(unpack(t)) end})
     t1:CreateDropdown({Description = "Special Type - Player", Callback = "", SpecialType = "Player"})
 end]]--
-return Luna
+return Nebula
