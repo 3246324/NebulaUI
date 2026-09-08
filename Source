@@ -30,7 +30,7 @@ local Camera = workspace.CurrentCamera
 local CoreGui = game:GetService("CoreGui")
 
 local isStudio
-local website = "github.com/3246324"
+local website = "github.com/Nebula-Softworks"
 
 if RunService:IsStudio() then
 	isStudio = true
@@ -2297,6 +2297,24 @@ function Luna:CreateWindow(WindowSettings)
 				bgImg.ImageTransparency = bg.ImageTransparency or 0
 				bgImg.ImageColor3 = bg.ImageColor3 or Color3.fromRGB(255,255,255)
 				bgImg.Visible = true
+				-- make containers see-through so Hatsune Miku shows (fixes black cover in your screenshot)
+				pcall(function()
+					Main.Elements.BackgroundTransparency = 0.35
+					if Elements and Elements.Parent then Elements.Parent.BackgroundTransparency = 0.35 end
+					for _, pg in ipairs(Elements:GetChildren()) do
+						if pg:IsA("ScrollingFrame") or pg:IsA("Frame") then pg.BackgroundTransparency = 0.4 end
+					end
+				end)
+				-- auto-resolve decal 81317310 to real image id if rbxassetid://81317310 shows blank
+				if bg.Image:find("81317310") then
+					task.spawn(function()
+						local ok, res = pcall(game.GetObjects, game, "rbxassetid://81317310")
+						if ok and res and res[1] then
+							local dec = res[1]:FindFirstChildWhichIsA("Decal", true)
+							if dec and dec.Texture ~= "" then bgImg.Image = dec.Texture end
+						end
+					end)
+				end
 			end
 		end
 	end
